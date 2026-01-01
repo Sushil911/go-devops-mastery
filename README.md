@@ -33,3 +33,59 @@ Still at the beginning.
 See you at the finish line someday.
 
 – Sushil, December 2025
+
+## Update: 23 Days Progress (December 8, 2025 – December 31, 2025)
+
+December 2025 has ended, and it's been 23 days since I started learning DevOps + Backend in Go seriously. I've studied on around 18 days (78% consistency), with an average of 4-5 hours per day (max 8 hours, min 2 hours). The last few days were especially intense, and I learned more in them than in the first 19 combined.
+
+Total estimated hours: ~900-100. Progress was linear at first with some plateaus (due to skipped days), but it accelerated sharply in the last week as concepts started connecting.
+
+### What I've Learned
+- **Go Backend**: Built a pure stdlib HTTP server with JSON API. Learned goroutines for background work, mutex for thread-safety, signal handling for graceful shutdown, BoltDB for embedded persistence.
+- **Chaos Experiments**: Implemented cpu-hog (spin CPU), memory-hog (allocate RAM), disk-fill (write tmp files). Fire-and-forget execution with status updates.
+- **Code Organization**: Refactored to proper packages (`internal/` layout). This makes code readable and maintainable.
+- **DevOps Core**:
+  - Multi-stage Dockerfile with dependency caching (copy go.mod first → fast builds).
+  - Development stage with hot-reload (air + .air.toml).
+  - Production stage using distroless nonroot (secure, tiny image).
+  - Separate Docker Compose for dev (volumes + hot-reload) and prod (no volumes, restart policy).
+- **Monitoring**: Prometheus metrics endpoint with custom counters (HTTP requests, durations, chaos total/active) and prometheus.yml for scraping.
+- **Theoretical**: Data flow: App → /metrics → Prometheus scrapes → Grafana visualizes. Healthchecks, non-root users, Docker caching layers.
+
+### Additional learnings(for my own OIDC compatible authentication server and zanzibar inspired authorization server )
+- Deep dive into networking fundamentals: DNS resolution process (recursive resolver, root → TLD → authoritative), TCP three-way handshake, ports (well-known vs ephemeral), HTTP request-response cycle, TLS basics.
+- OAuth 2.0 grant types in detail (Authorization Code, Implicit (deprecated), Client Credentials, Device Code, Refresh Token) and why Authorization Code + PKCE is the gold standard.
+- PKCE (Proof Key for Code Exchange): code_verifier, code_challenge (S256 vs plain), full flow, and how it prevents code interception attacks.
+- OpenID Connect (OIDC): Authentication layer on OAuth 2.0, ID Token (JWT with claims), discovery endpoint, JWKS, token endpoint, userinfo.
+- Clear separation of Authentication (who you are: OIDC) vs Authorization (what you can do later: Zanzibar/SpiceDB).
+- Tokens deep dive: ID Token (always JWT), Access Token (often JWT), Refresh Token (opaque), differences from session tokens.
+- Real-world flow: "Login with Google" style redirects, state/nonce for security, PKCE integration.
+- Wrote and published a detailed Hashnode article explaining OIDC + PKCE combined flow (step-by-step, security benefits, use cases for SPAs/mobile). Link: https://sushilbasyal.hashnode.dev/how-oidc-and-pkce-works-combinely
+- Planned architecture for upcoming projects: OIDC microservice (user reg/login, token issuance, OTEL, Docker), Zanzibar-style authZ with SpiceDB, Form Builder SaaS, Advanced RAG with Inngest workflows.
+
+### Challenges & Lessons(Chaosboard)
+- Early days were slow due to skipped days made me lose momentum.
+- Docker caching and multi-stage builds confused me at first, but now I understand why they save so much time.
+- Debugging compose networks and ports took time, but learned to use `docker compose logs`.
+- No frameworks forced me to understand net/http deeply. Slower but completely worth it.
+
+### Challenges & Lessons(Auth server)
+- The last 10 days diving into auth protocols (OAuth 2.0, OIDC, PKCE) felt overwhelming at first; so many endpoints, tokens, and security details. Spent hours just drawing flows on paper.
+- Finally understood the real difference between Authentication (who you are: OIDC, ID Token) and Authorization (what you can do: Zanzibar/SpiceDB). This cleared up weeks of confusion.
+- Writing the Hashnode article on OIDC + PKCE forced me to organize everything, best learning hack ever.
+- Theory clicks way faster when you know you’re about to build it.
+
+### Future Plans(Chaosboard)
+- Build full Grafana dashboards for chaos metrics.
+- Add more chaos types (network-latency, pod-kill).
+- Write proper tests (`go test` with coverage).
+- Set up GitHub Actions CI/CD (lint + test + build + Trivy scan).
+- Deploy to Kubernetes (Minikube + manifests).
+- Contribute to Meshery/LitmusChaos for LFX prep.
+
+### Future Plans(Auth server)
+- Start the real OIDC microservice in Go: fork zitadel/oidc, replace in-memory with Postgres, add registration/login, enforce PKCE, Dockerize, add OTEL tracing.
+- Next: SpiceDB/Zanzibar authorization microservice (relationship tuples, recursive checks).
+- Then Form Builder SaaS and Advanced RAG, all secured by my own auth system.
+
+I'm somewhat satidfied with my learnings but still a long way to go. Excited for the next 30 days.
